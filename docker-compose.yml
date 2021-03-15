@@ -1,0 +1,39 @@
+version: '3.7'
+
+services:
+
+  student-backend:
+    image: maven:3.6.3-jdk-11
+    container_name: student-backend
+    command: mvn spring-boot:run
+    ports:
+      - 8081:8080
+    volumes:
+      - .:/usr/src/mymaven:rw
+    working_dir: /usr/src/mymaven
+    networks:
+      - student-net
+
+  student-db:
+    image: postgres
+    container_name: student-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: POSTGRES
+      POSTGRES_USER: POSTGRES
+      POSTGRES_PASSWORD: POSTGRES
+      POSTGRES_DB: STUDENT-DB
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - student-net
+
+volumes:
+  db-data:
+
+networks:
+  student-net:
+    driver: bridge
